@@ -46,6 +46,7 @@
       </tr>
     </tbody>
   </table>
+  <Pagination :pages="pagination" @emitPages="getProduct"></Pagination>
   <Modal ref="Modal" :product="tempProduct" @update-product="updateProduct"></Modal>
   <DelModal ref="DelModal" :product="tempProduct" @del-product="delProduct"></DelModal>
 </template>
@@ -57,7 +58,8 @@
 import { ProductApi } from '../assets/api/ProductApi.js'
 import Modal from '../components/ProductModal.vue'
 import DelModal from '../components/DelProductModal.vue'
-// if I don't want to import a lot of plugin can use mixins
+import Pagination from '../components/Pagination.vue'
+// if I don't want to import a lot of plugin , and I can use mixins
 /*
   mixins:[xxx] => xxx is export file
 */
@@ -73,14 +75,15 @@ export default ({
   },
   components: {
     Modal,
-    DelModal
+    DelModal,
+    Pagination
   },
   // Dashboard 父層傳進emitter
   inject: ['emitter'],
   methods: {
-    getProduct () {
+    getProduct (page) {
       this.isLoading = true
-      ProductApi.getProducts(1).then((res) => {
+      ProductApi.getProducts(page || 1).then((res) => {
         if (res.data.success) {
           this.products = res.data.products
           this.pagination = res.data.pagination
