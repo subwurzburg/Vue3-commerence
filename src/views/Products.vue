@@ -124,7 +124,7 @@ export default ({
       }
     },
     updateProduct (item) {
-      this.tempProduct = item
+      this.tempProduct = { ...item }
       this.isLoading = true
       if (!this.isNew) {
         ProductApi.reviseProduct(item.id, { data: this.tempProduct }).then((res) => {
@@ -140,6 +140,7 @@ export default ({
         })
       }
       this.isLoading = false
+      this.tempProduct = {}
     },
     delProduct (item) {
       this.tempProduct = item
