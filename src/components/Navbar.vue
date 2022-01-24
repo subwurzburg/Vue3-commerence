@@ -8,13 +8,13 @@
       <div class="collapse navbar-collapse" id="navbarText">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
+            <router-link to="/dashboard/products" class="nav-link">產品</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Features</a>
+             <router-link to="/dashboard/orders" class="nav-link">訂單</router-link>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Pricing</a>
+            <a class="nav-link" href="#">優惠券</a>
           </li>
         </ul>
         <span class="navbar-text" @click.prevent="logout">
