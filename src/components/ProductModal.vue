@@ -16,7 +16,7 @@
               <div class="mb-3">
                 <label for="image" class="form-label">輸入圖片網址</label>
                 <input type="text" class="form-control" id="image"
-                        placeholder="請輸入圖片連結">
+                        placeholder="請輸入圖片連結" v-model="tempProduct.imgUrl">
               </div>
               <div class="mb-3">
                 <label for="customFile" class="form-label">或 上傳圖片
@@ -24,7 +24,7 @@
                 </label>
                 <input type="file" id="customFile" class="form-control" @change="updatePicture" ref="pictureInput">
               </div>
-              <img class="img-fluid" alt="">
+              <img class="img-fluid" alt="" :src="tempProduct.imgUrl">
               <!-- 延伸技巧，多圖 -->
               <div class="mt-5">
                 <div class="mb-3 input-group" >
@@ -147,7 +147,6 @@ export default {
       ProductApi.uploadPicture(formData).then((res) => {
         if (res.data.success) {
           this.tempProduct.imgUrl = res.data.imageUrl
-          console.log(this.tempProduct.imgUrl)
         }
       })
     }
