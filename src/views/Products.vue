@@ -28,10 +28,10 @@
         <td>{{item.category}}</td>
         <td>{{item.title}}</td>
         <td class="text-right">
-          {{item.origin_price}}
+          {{currency(item.origin_price)}}
         </td>
         <td class="text-right">
-          {{item.price}}
+          {{currency(item.price)}}
         </td>
         <td>
           <span class="text-success" v-if="item.is_enabled">啟用</span>
@@ -59,6 +59,7 @@ import { ProductApi } from '../assets/api/ProductApi.js'
 import Modal from '../components/ProductModal.vue'
 import DelModal from '../components/DelProductModal.vue'
 import Pagination from '../components/Pagination.vue'
+import { Reg } from '../assets/reg/Reg.js'
 // if I don't want to import a lot of plugin , and I can use mixins
 /*
   mixins:[xxx] => xxx is export file
@@ -81,6 +82,9 @@ export default ({
   // Dashboard 父層傳進emitter
   inject: ['emitter'],
   methods: {
+    currency (num) {
+      return Reg.currency(num)
+    },
     getProduct (page) {
       this.isLoading = true
       ProductApi.getProducts(page || 1).then((res) => {
