@@ -75,10 +75,12 @@ export default ({
     Modal,
     DelModal
   },
+  // Dashboard 父層傳進emitter
+  inject: ['emitter'],
   methods: {
     getProduct () {
       this.isLoading = true
-      ProductApi.getProducts().then((res) => {
+      ProductApi.getProducts(1).then((res) => {
         if (res.data.success) {
           this.products = res.data.products
           this.pagination = res.data.pagination
@@ -100,6 +102,20 @@ export default ({
       this.tempProduct = { ...item }
       this.$refs.DelModal.showModal()
     },
+    notification (res) {
+      if (res.data.success) {
+        this.emitter.emit('new-msg', {
+          style: 'success',
+          title: '更新成功'
+        })
+      } else {
+        this.emitter.emit('new-msg', {
+          style: 'danger',
+          title: '更新失敗',
+          content: res.data.message.join('、')
+        })
+      }
+    },
     updateProduct (item) {
       this.tempProduct = item
       this.isLoading = true
@@ -107,11 +123,13 @@ export default ({
         ProductApi.reviseProduct(item.id, { data: this.tempProduct }).then((res) => {
           this.$refs.Modal.hideModal()
           this.getProduct()
+          this.notification(res)
         })
       } else {
         ProductApi.addProduct({ data: this.tempProduct }).then((res) => {
           this.$refs.Modal.hideModal()
           this.getProduct()
+          this.notification(res)
         })
       }
       this.isLoading = false

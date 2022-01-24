@@ -7,8 +7,8 @@ export const ProductApi = {
   delProduct
 }
 
-function getProducts () {
-  const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products`
+function getProducts (page) {
+  const api = `${process.env.VUE_APP_API}api/${process.env.VUE_APP_PATH}/admin/products/?page=${page}`
   return new Promise((resolve, reject) => {
     axios.get(api)
       .then((res) => {

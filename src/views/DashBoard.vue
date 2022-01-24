@@ -8,12 +8,17 @@
     </div>
   </loading>
   <Navbar></Navbar>
-  <router-view/>
+  <div class="container-fluid mt-3 position-relative">
+    <ToastMessage></ToastMessage>
+    <router-view/>
+  </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
 import { loginApi } from '../assets/api/loginApi'
+import emitter from '../assets/methods/emitter'
+import ToastMessage from '../components/ToastMessage.vue'
 export default ({
   data () {
     return {
@@ -21,7 +26,14 @@ export default ({
     }
   },
   components: {
-    Navbar
+    Navbar,
+    ToastMessage
+  },
+  // Provide 把父層的東西給子層(所有子層)、接收用inject接收
+  provide () {
+    return {
+      emitter
+    }
   },
   created () {
     this.isLoading = true
