@@ -1,4 +1,12 @@
 <template>
+  <loading :active="isLoading">
+    <div class="loadingio-spinner-ripple-wu44vrvts1">
+      <div class="ldio-2gn8nvj94zp">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </loading>
   <div class="text-end">
       <button class="btn btn-primary" type="button" @click="openModal(true)">
         增加產品
@@ -42,6 +50,9 @@
   <DelModal ref="DelModal" :product="tempProduct" @del-product="delProduct"></DelModal>
 </template>
 
+<style lang="scss">
+</style>
+
 <script>
 import { ProductApi } from '../assets/api/ProductApi.js'
 import Modal from '../components/ProductModal.vue'
@@ -56,7 +67,8 @@ export default ({
       products: [],
       pagination: {},
       tempProduct: {},
-      isNew: false
+      isNew: false,
+      isLoading: false
     }
   },
   components: {
@@ -65,11 +77,13 @@ export default ({
   },
   methods: {
     getProduct () {
+      this.isLoading = true
       ProductApi.getProducts().then((res) => {
         if (res.data.success) {
           this.products = res.data.products
           this.pagination = res.data.pagination
         }
+        this.isLoading = false
       })
     },
     openModal (isNew, item) {
@@ -88,6 +102,7 @@ export default ({
     },
     updateProduct (item) {
       this.tempProduct = item
+      this.isLoading = true
       if (!this.isNew) {
         ProductApi.reviseProduct(item.id, { data: this.tempProduct }).then((res) => {
           this.$refs.Modal.hideModal()
@@ -99,15 +114,18 @@ export default ({
           this.getProduct()
         })
       }
+      this.isLoading = false
     },
     delProduct (item) {
       this.tempProduct = item
+      this.isLoading = true
       ProductApi.delProduct(this.tempProduct.id).then((res) => {
         if (res.data.success) {
           this.$refs.DelModal.hideModal()
           this.getProduct()
         }
       })
+      this.isLoading = false
     }
   },
   created () {

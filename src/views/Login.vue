@@ -1,4 +1,12 @@
 <template>
+  <loading :active="isLoading">
+    <div class="loadingio-spinner-ripple-wu44vrvts1">
+      <div class="ldio-2gn8nvj94zp">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </loading>
   <div class="container mt-5">
     <form class="row justify-content-center" @submit.prevent="SignIn">
       <div class="col-md-6">
@@ -45,11 +53,13 @@ export default {
       user: {
         username: null,
         password: null
-      }
+      },
+      isLoading: false
     }
   },
   methods: {
     SignIn () {
+      this.isLoading = true
       loginApi.login(this.user).then((res) => {
         if (res.data.success) {
           const { token, expired } = res.data
@@ -57,6 +67,7 @@ export default {
           this.$router.push('/dashboard/products')
         }
       })
+      this.isLoading = false
     }
   }
 }
